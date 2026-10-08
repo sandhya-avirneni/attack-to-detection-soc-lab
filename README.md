@@ -31,34 +31,25 @@ Instead of focusing only on offensive activity, this lab follows the complete wo
 
 ### Data Flow
 
+Kali Linux (Attacker)
+192.168.56.101
+        |
+        | Simulated Attacks
+        v
+Ubuntu Endpoint
+192.168.56.103
+SSH / TCP 22
+auditd
+/var/log/auth.log
+        |
+        | Security Telemetry
+        v
+Detection & Analysis
+- Detection rule evaluation
+- Manual investigation of suspicious activity
+- MITRE ATT&CK mapping
+- Incident documentation
 
-┌──────────────────┐
-│   Kali Linux     │
-│    Attacker      │
-│ 192.168.56.101   │
-└────────┬─────────┘
-         │
-         │ Simulated Attacks
-         ▼
-┌─────────────────────────┐
-│     Ubuntu Endpoint     │
-│      192.168.56.103     │
-│                         │
-│  SSH / TCP 22           │
-│  auditd                 │
-│  /var/log/auth.log      │
-└───────────┬─────────────┘
-            │
-            │ Telemetry
-            ▼
-┌─────────────────────────┐
-│   Detection & Analysis  │
-│                         │
-│  Detection Rules        │
-│  Alert Investigation    │
-│  MITRE ATT&CK Mapping   │
-│  Incident Response      │
-└─────────────────────────┘
 ```
 
 Detailed architecture documentation is available in [`architecture/`](./architecture/).
