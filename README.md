@@ -96,10 +96,10 @@ See [`attacks/ssh-brute-force.md`](./attacks/ssh-brute-force.md).
 
 Simulated local account discovery by accessing:
 
-```
+
 /etc/passwd
 /etc/group
-```
+
 
 Auditd file-watch rules were used to generate telemetry for this activity.
 
@@ -115,35 +115,31 @@ The lab uses multiple telemetry sources to identify and investigate activity.
 
 Source:
 
-```
+
 /var/log/auth.log
-```
+
 
 Detection logic:
 
-```
 ≥5 failed or invalid SSH authentication attempts
 from the same source IP
 → Potential SSH brute-force activity
-```
+
 
 ### Auditd Command Execution Monitoring
 
 An `execve` audit rule was configured to capture command execution activity.
 
-```
+
 -a always,exit -F arch=b64 -S execve -F key=command_execution
-```
 
 ### Account Discovery Monitoring
 
 Auditd file watches were configured for:
 
-```
 /etc/passwd
 /etc/group
 /etc/shadow
-```
 
 These provide telemetry for account discovery and credential-related file access.
 
@@ -198,11 +194,9 @@ The MITRE mapping is documented in [`mitre/attack-mapping.md`](./mitre/attack-ma
 
 Detection quality was tested using benign administrative commands such as:
 
-```
 whoami
 uname -a
 cat /etc/os-release
-```
 
 These activities generated telemetry but were intentionally classified as **benign**.
 
@@ -216,7 +210,7 @@ See [`detections/false-positive-testing.md`](./detections/false-positive-testing
 
 The investigation workflow included:
 
-1. Identify the alert
+1. Identify suspicious log activity
 2. Validate the source and target
 3. Review authentication and audit logs
 4. Determine whether authentication succeeded
