@@ -55,10 +55,9 @@ Detection & Analysis
 Detailed architecture documentation is available in [`architecture/`](./architecture/).
 
 ---
+## 🔴Attack Scenarios
 
-## 🔴 Attack Scenarios
-
-### 1. Network Reconnaissance
+### 1.Network Reconnaissance
 
 Performed service discovery against the Ubuntu endpoint using Nmap.
 
@@ -71,7 +70,7 @@ Identify exposed services and understand the attack surface.
 
 ---
 
-### 2. SSH Brute-Force Simulation
+### 2.SSH Brute-Force Simulation
 
 Simulated repeated SSH authentication attempts against the Ubuntu endpoint using a non-existent account.
 
@@ -92,14 +91,16 @@ See [`attacks/ssh-brute-force.md`](./attacks/ssh-brute-force.md).
 
 ---
 
-### 3. Local Account Discovery
+### 3.Local Account Discovery
 
 Simulated local account discovery by accessing:
 
-
+```
 /etc/passwd
+```
+```
 /etc/group
-
+```
 
 Auditd file-watch rules were used to generate telemetry for this activity.
 
@@ -115,9 +116,9 @@ The lab uses multiple telemetry sources to identify and investigate activity.
 
 Source:
 
-
+```
 /var/log/auth.log
-
+```
 
 Detection logic:
 
@@ -136,10 +137,11 @@ An `execve` audit rule was configured to capture command execution activity.
 ### Account Discovery Monitoring
 
 Auditd file watches were configured for:
-
+```
 /etc/passwd
 /etc/group
 /etc/shadow
+```
 
 These provide telemetry for account discovery and credential-related file access.
 
