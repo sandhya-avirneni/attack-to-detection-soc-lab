@@ -17,6 +17,8 @@ Instead of focusing only on offensive activity, this lab follows the complete wo
 ---
 
 ## 🏗️ Lab Architecture
+![Attack-to-Detection SOC Lab Architecture](architecture/architecture-diagram.png)
+
 
 | Component    | Role                           | IP Address       |
 | ------------ | ------------------------------ | ---------------- |
