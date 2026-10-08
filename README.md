@@ -31,6 +31,7 @@ Instead of focusing only on offensive activity, this lab follows the complete wo
 
 ### Data Flow
 
+```text
 Kali Linux (Attacker)
 192.168.56.101
         |
@@ -46,10 +47,9 @@ auditd
         v
 Detection & Analysis
 - Detection rule evaluation
-- Manual investigation of suspicious activity
+- Manual investigation
 - MITRE ATT&CK mapping
 - Incident documentation
-
 ```
 
 Detailed architecture documentation is available in [`architecture/`](./architecture/).
