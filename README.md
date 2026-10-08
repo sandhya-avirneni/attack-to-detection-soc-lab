@@ -57,7 +57,7 @@ Detailed architecture documentation is available in [`architecture/`](./architec
 ---
 ## 🔴Attack Scenarios
 
-### 1.Network Reconnaissance
+### 1. Network Reconnaissance
 
 Performed service discovery against the Ubuntu endpoint using Nmap.
 
@@ -66,18 +66,18 @@ Identify exposed services and understand the attack surface.
 
 **Tool:**
 
-* Nmap
+* nmap -sV 192.168.56.103
 
 ---
 
-### 2.SSH Brute-Force Simulation
+### 2. SSH Brute-Force Simulation
 
 Simulated repeated SSH authentication attempts against the Ubuntu endpoint using a non-existent account.
 
-**Source:** `192.168.56.101`
-**Target:** `192.168.56.103`
-**Account:** `fakeuser`
-**Observed attempts:** `12`
+- **Source:** `192.168.56.101`
+- **Target:** `192.168.56.103`
+- **Account:** `fakeuser`
+- **Observed attempts:** `12`
 
 A detection threshold of **5 failed/invalid authentication attempts from a single source** was used to identify potential brute-force activity.
 
@@ -91,7 +91,7 @@ See [`attacks/ssh-brute-force.md`](./attacks/ssh-brute-force.md).
 
 ---
 
-### 3.Local Account Discovery
+### 3. Local Account Discovery
 
 Simulated local account discovery by accessing:
 
@@ -153,11 +153,11 @@ See [`detections/`](./detections/) for the detection documentation and matrix.
 
 ### Incident 001 — SSH Brute Force
 
-**Severity:** High
-**Source:** `192.168.56.101`
-**Target:** `192.168.56.103`
-**Service:** SSH
-**Result:** Detected and investigated
+- **Severity:** High
+- **Source:** `192.168.56.101`
+- **Target:** `192.168.56.103`
+- **Service:** SSH
+- **Result:** Detected and investigated
 
 Investigation confirmed multiple failed authentication attempts against a non-existent account.
 
@@ -169,10 +169,10 @@ See [`investigations/incident-001.md`](./investigations/incident-001.md).
 
 ### Incident 002 — Local Account Discovery
 
-**Host:** Ubuntu endpoint
-**Activity:** Access to `/etc/passwd` and `/etc/group`
-**Telemetry:** auditd
-**Result:** Detected and investigated
+- **Host:** Ubuntu endpoint
+- **Activity:** Access to `/etc/passwd` and `/etc/group`
+- **Telemetry:** auditd
+- **Result:** Detected and investigated
 
 See [`investigations/incident-002.md`](./investigations/incident-002.md).
 
@@ -186,7 +186,8 @@ The simulated activities were mapped to relevant MITRE ATT&CK techniques.
 | --------------------------- | ----------------------------------------- |
 | SSH brute-force simulation  | T1110 — Brute Force                       |
 | Local account discovery     | T1087.001 — Local Account Discovery       |
-| Command execution telemetry | T1059 — Command and Scripting Interpreter |
+| Command execution telemetry(contextual mapping)| T1059 — Command and Scripting Interpreter
+|Nmap reconnaissance mapping |T1046 — Network Service Discovery|
 
 The MITRE mapping is documented in [`mitre/attack-mapping.md`](./mitre/attack-mapping.md).
 
@@ -230,10 +231,10 @@ For the SSH simulation, investigation confirmed that the targeted account did no
 
 | Detection                 | Telemetry       | Status                |
 | ------------------------- | --------------- | --------------------- |
-| SSH brute force           | `auth.log`      | ✅ Detected            |
-| Local account discovery   | auditd          | ✅ Detected            |
+| SSH brute force           | `auth.log`      | ✅Threshold exceeded; manually validated           |
+| Local account discovery   | auditd          | ✅ Events observed and investigated           |
 | Command execution         | auditd `execve` | ✅ Telemetry validated |
-| False-positive validation | auditd          | ✅ Tested              |
+| False-positive validation | auditd          | ✅ Benign activity tested            |
 
 ---
 
@@ -273,29 +274,27 @@ For the SSH simulation, investigation confirmed that the targeted account did no
 
 ```
 attack-to-detection-soc-lab/
-│
 ├── architecture/
-│   └── README.md
-│
+│   ├── README.md
+│   └── architecture-diagram.png
 ├── attacks/
 │   ├── ssh-brute-force.md
 │   └── account-discovery.md
-│
 ├── detections/
 │   ├── ssh-bruteforce.md
 │   ├── detection-matrix.md
 │   └── false-positive-testing.md
-│
 ├── investigations/
 │   ├── incident-001.md
 │   └── incident-002.md
-│
 ├── mitre/
 │   └── attack-mapping.md
-│
 ├── evidence/
-│   └── README.md
-│
+│   ├── README.md
+│   ├── 01-nmap-reconnaissance.png
+│   ├── 02-ssh-authentication-failures.png
+│   └── 03-account-discovery-auditd.png
+├── README.md
 └── lessons-learned.md
 ```
 
