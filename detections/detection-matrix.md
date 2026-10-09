@@ -10,14 +10,14 @@ The goal is to demonstrate how raw security telemetry can be transformed into ac
 
 ## Detection Coverage
 
-| ID  | Activity                | Data Source         | Detection Logic                                | MITRE ATT&CK | Result                |
-| --- | ----------------------- | ------------------- | ---------------------------------------------- | ------------ | --------------------- |
-| D01 | SSH Brute Force         | `/var/log/auth.log` | ≥5 failed/invalid attempts from same source IP | T1110        | ✅ Detected            |
-| D02 | Local Account Discovery | auditd              | Access to `/etc/passwd` or `/etc/group`        | T1087.001    | ✅ Detected            |
-| D03 | Command Execution       | auditd `execve`     | Monitor process/command execution events       | T1059        | ✅ Telemetry validated |
-| D04 | Network Reconnaissance  | tcpdump / Nmap      | Network traffic and service discovery activity | T1046        | ✅ Observed            |
-
----
+| ID | Activity | Data Source | Detection / Investigation Method | MITRE ATT&CK | Result |
+|---|---|---|---|---|---|
+**| D01 | SSH Brute-Force Simulation | `/var/log/auth.log` | Manual evaluation of ≥5 failed/invalid attempts from one source IP | T1110 | Threshold exceeded |
+| D02 | Local Account Discovery | Linux auditd | Monitoring access to `/etc/passwd` and `/etc/group` | T1087.001 | Audit events investigated |
+| D03 | Command Execution Monitoring | Linux auditd (`execve`) | Manual validation of command-execution telemetry | T1059 (contextual) | Benign telemetry validated |
+| D04 | Network Reconnaissance | Nmap / tcpdump | Service enumeration and network traffic observation | T1046 | Reconnaissance documented |
+| D05 | SSH Event Investigation | Splunk Cloud | Manual log ingestion and SPL search | Not independently established | Two SSH-related events analyzed |
+---**
 
 ## D01 — SSH Brute Force
 
@@ -42,7 +42,7 @@ Source: 192.168.56.101
 Target: 192.168.56.103
 ```
 
-**Outcome:** Detection threshold exceeded.
+**Outcome:** The documented events exceeded the manually defined analytical threshold. No automated alert was configured or generated.
 
 ---
 
@@ -69,7 +69,7 @@ Auditd file-watch rules were used to generate telemetry when these account-relat
 
 **T1087.001 — Local Account Discovery**
 
-**Outcome:** Activity detected and investigated.
+**Outcome:** File-access audit events were collected and manually investigated. The events provide telemetry relevant to local account discovery but do not independently establish malicious activity.
 
 ---
 
@@ -126,9 +126,48 @@ Network traffic was captured with tcpdump to validate network-level visibility.
 
 **MITRE ATT&CK:**
 
-**T1046 — Network Service Scanning**
+**T1046 — Network Service Discovery**
 
 **Outcome:** Reconnaissance activity observed.
+
+---
+
+## D05 — Splunk Cloud SSH Event Investigation
+
+**Platform:** Splunk Cloud — Search & Reporting
+
+**Log Ingestion Method:** Manual upload of SSH-related event data.
+
+### Investigation Objective
+
+Investigate indexed SSH-related events using Splunk Search Processing Language (SPL).
+
+### SPL Query
+
+```spl id="c8c6l3"
+index=main "libssh" | table _time, _raw
+```
+
+### Observed Results
+
+The search returned two SSH-related events containing:
+
+- Source IP address: `192.168.56.101`
+- SSH protocol identification information
+- Event timestamps
+- Raw connection-event data
+
+### Investigation Outcome
+
+Successfully retrieved and analyzed SSH-related security telemetry using Splunk Cloud.
+
+This exercise demonstrated manual SIEM log ingestion, SPL querying, and security event investigation.
+
+**Limitation:** Automated log forwarding, scheduled detection searches, and SIEM alert generation were not implemented.
+
+**Evidence:**
+
+![Splunk Cloud SSH Analysis](../evidence/04-splunk-cloud-ssh-analysis.png)
 
 ---
 
@@ -147,7 +186,19 @@ Example:
 >
 5-attempt threshold
 =
-Potential brute-force alert
+12 documented failed/invalid SSH authentication events
+                |
+                v
+Manually evaluated against 5-attempt threshold
+                |
+                v
+Threshold exceeded
+                |
+                v
+Potential SSH brute-force activity
+                |
+                v
+Manual investigation
 ```
 
 ### Multiple Telemetry Sources
@@ -160,6 +211,7 @@ Different activities require different data sources:
 | auditd     | Endpoint activity       |
 | tcpdump    | Network traffic         |
 | Nmap       | Service discovery       |
+| splunk cloud| Indexed log searching and SIEM investigation|
 
 ### Contextual Investigation
 
@@ -176,19 +228,20 @@ For example, the SSH detection required additional investigation to determine:
 
 ## Detection Limitations
 
-The current lab uses relatively simple detection logic.
+The current lab demonstrates foundational detection engineering and manual security investigation.
 
-Potential limitations include:
+Limitations include:
 
-* Thresholds are static
-* No centralized SIEM correlation
-* No automated alerting
-* Limited historical baselining
-* Limited network protocol analysis
-* No Windows endpoint telemetry
+- Static analytical thresholds.
+- Manual SSH brute-force detection validation.
+- Manual log ingestion into Splunk Cloud.
+- No automated SIEM alert generation.
+- No automated correlation between authentication, endpoint, and network telemetry.
+- Limited historical baselining.
+- Limited network protocol analysis.
+- No Windows endpoint telemetry.
 
 These limitations provide opportunities for future improvements.
-
 ---
 
 ## Future Detection Improvements
@@ -196,7 +249,7 @@ These limitations provide opportunities for future improvements.
 Planned enhancements include:
 
 * Sigma detection rules
-* Centralized SIEM ingestion
+* Automated log forwarding and continuous ingestion into Splunk Cloud
 * Zeek network telemetry
 * Suricata IDS/IPS
 * Windows Sysmon telemetry
