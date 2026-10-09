@@ -76,14 +76,22 @@ The SSH and account discovery scenarios were documented using authentication log
 
 ## 6. Limitations Identified
 
-This lab demonstrated manual detection validation and incident investigation rather than a fully automated SOC environment.
+This lab demonstrated manual detection validation, incident investigation, and SIEM-based log analysis rather than a fully automated SOC environment.
 
-Current limitations include:
-- No centralized SIEM platform.
-- No automated alert generation.
+### SIEM Implementation Limitations
+
+Splunk Cloud was used to investigate manually uploaded SSH-related security telemetry.
+
+An SPL search was executed to retrieve indexed SSH connection events and examine timestamps, source IP addresses, and raw event data.
+
+Although this exercise provided hands-on experience with SIEM log ingestion and investigation, automated log forwarding from Ubuntu to Splunk Cloud, scheduled detection searches, and automated alert generation were not implemented.
+
+### Additional Limitations
+
 - Limited endpoint coverage.
 - Detection logic validated through manual analysis.
 - A small number of controlled attack scenarios.
+- No automated incident response or containment.
 
 Recognizing these limitations helps define realistic future improvements.
 
