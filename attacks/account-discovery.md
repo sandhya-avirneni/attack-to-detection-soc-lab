@@ -123,7 +123,9 @@ Some audit records may also reflect legitimate system or investigation processes
 
 ## 10. Evidence
 
-![Linux Account Discovery Audit Evidence](../evidence/03-account-discovery-auditd.png)
+![Account Discovery Audit Evidence 1](../evidence/03-account-discovery-auditd-1.png)
+
+![Account Discovery Audit Evidence 2](../evidence/03-account-discovery-auditd-2.png)
 
 The screenshot demonstrates auditd records associated with monitored account-information files.
 
