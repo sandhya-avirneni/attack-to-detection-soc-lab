@@ -12,12 +12,13 @@ The goal is to demonstrate how raw security telemetry can be transformed into ac
 
 | ID | Activity | Data Source | Detection / Investigation Method | MITRE ATT&CK | Result |
 |---|---|---|---|---|---|
-**| D01 | SSH Brute-Force Simulation | `/var/log/auth.log` | Manual evaluation of ≥5 failed/invalid attempts from one source IP | T1110 | Threshold exceeded |
+| D01 | SSH Brute-Force Simulation | `/var/log/auth.log` | Manual evaluation of ≥5 failed/invalid events from one source IP | T1110 | Threshold exceeded |
 | D02 | Local Account Discovery | Linux auditd | Monitoring access to `/etc/passwd` and `/etc/group` | T1087.001 | Audit events investigated |
 | D03 | Command Execution Monitoring | Linux auditd (`execve`) | Manual validation of command-execution telemetry | T1059 (contextual) | Benign telemetry validated |
 | D04 | Network Reconnaissance | Nmap / tcpdump | Service enumeration and network traffic observation | T1046 | Reconnaissance documented |
 | D05 | SSH Event Investigation | Splunk Cloud | Manual log ingestion and SPL search | Not independently established | Two SSH-related events analyzed |
----**
+
+---
 
 ## D01 — SSH Brute Force
 
@@ -177,15 +178,11 @@ The lab demonstrates several detection engineering principles:
 
 ### Threshold-Based Detection
 
-Repeated events can be grouped into a meaningful security signal.
+Repeated authentication events can be evaluated against a manually defined threshold to identify potentially suspicious activity.
 
-Example:
+The SSH simulation was evaluated using the following workflow:
 
-```text id="v0i4x3"
-12 failed SSH attempts
->
-5-attempt threshold
-=
+```text
 12 documented failed/invalid SSH authentication events
                 |
                 v
@@ -199,6 +196,9 @@ Potential SSH brute-force activity
                 |
                 v
 Manual investigation
+```
+
+No automated alert was generated.
 ```
 
 ### Multiple Telemetry Sources
