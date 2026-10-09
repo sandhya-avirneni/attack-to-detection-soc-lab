@@ -55,12 +55,8 @@ The targeted account, `fakeuser`, did not exist on the Ubuntu system.
 
 ## Detection Logic
 
-A simple threshold-based detection was used:
+A manually defined threshold was used to evaluate the authentication logs. Five or more failed or invalid SSH authentication attempts from the same source IP were treated as potential brute-force activity. No automated detection rule or alert was implemented.
 
-```
-5 or more failed/invalid SSH authentication attempts
-from the same source IP
-→ Potential SSH brute-force activity
 ```
 
 The investigation identified:
@@ -95,7 +91,7 @@ A review for successful authentication events found no evidence of:
 * Successful public-key authentication
 * A successful SSH session
 
-Therefore, the simulated attack did **not** result in a successful login.
+No successful SSH authentication was identified in the reviewed evidence.
 
 ---
 
@@ -126,32 +122,39 @@ In a production environment, additional response actions could include:
 
 ## Evidence
 
-Primary evidence source:
+**Primary Evidence Source:**
 
-```
+```text
 /var/log/auth.log
 ```
 
-Supporting telemetry:
+**Authentication Log Screenshot:**
 
-```
-auditd
-tcpdump
-```
+![SSH Authentication Failures](../evidence/02-ssh-authentication-failures.png)
 
-Detailed investigation:
+The screenshot documents failed or invalid SSH authentication activity observed during the controlled simulation.
 
-[`investigations/incident-001.md`](../investigations/incident-001.md)
+**Related Lab Telemetry:**
 
-Detection documentation:
+Linux auditd and tcpdump were used for additional endpoint and network visibility in the broader SOC lab. They are not presented here as independent proof of the 12 SSH authentication attempts.
 
-[`detections/ssh-bruteforce.md`](../detections/ssh-bruteforce.md)
+**Detailed Investigation:**
 
+[Incident 001 — SSH Brute Force](../investigations/incident-001.md)
+
+**Detection Documentation:**
+
+[SSH Brute-Force Detection](../detections/ssh-bruteforce.md)
 ---
 
 ## Result
 
-**Status: Detected and Investigated**
+**Status: Manually Detected and Investigated**
 
-The lab successfully generated and identified repeated SSH authentication failures. The investigation confirmed **12 failed/invalid attempts** with **no evidence of successful authentication**.
+The controlled simulation generated repeated failed or invalid SSH authentication events in Ubuntu authentication logs.
 
+The investigation documented 12 failed or invalid events and evaluated them against a manually defined five-attempt threshold.
+
+No successful SSH authentication was identified in the reviewed evidence.
+
+No automated SIEM alert was generated.
