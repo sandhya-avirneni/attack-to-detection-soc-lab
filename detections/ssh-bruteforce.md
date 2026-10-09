@@ -40,7 +40,13 @@ from the same source IP
 → Potential SSH brute-force activity
 ```
 
-This threshold was selected for the lab to demonstrate how repeated authentication failures can be converted into a security alert.
+This threshold was selected for the lab to demonstrate how repeated authentication failures can be identified as potentially suspicious activity.
+
+During the controlled simulation, the documented authentication events were manually reviewed against this threshold using Ubuntu authentication logs.
+
+Detection Method: Manual log analysis and threshold validation.
+
+Automation Status: No automated SIEM alert or scheduled detection rule was implemented.
 
 ---
 
@@ -70,7 +76,8 @@ During the simulated attack:
 | Target Account            | `fakeuser`       |
 | Failed/Invalid Attempts   | `12`             |
 | Detection Threshold       | `5`              |
-| Alert Triggered           | Yes              |
+| Automated Alert Triggered | No               |
+| Manual Detection Threshold Exceeded | Yes |
 | Successful Authentication | Not identified   |
 
 The threshold was exceeded by **7 attempts**.
