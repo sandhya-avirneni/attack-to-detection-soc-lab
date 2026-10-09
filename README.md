@@ -220,7 +220,9 @@ These records provided visibility into local account-information access.
 
 **Evidence:**
 
-![Account Discovery Audit Events](evidence/03-account-discovery-auditd.png)
+![Account Discovery Audit Evidence 1](evidence/03-account-discovery-auditd-1.png)
+
+![Account Discovery Audit Evidence 2](evidence/03-account-discovery-auditd-2.png)
 
 [View Attack Documentation](attacks/account-discovery.md)
 
