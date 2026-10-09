@@ -4,7 +4,7 @@
 
 A simulated SSH brute-force attack was detected against the Ubuntu endpoint after repeated failed authentication attempts from the Kali Linux attacker system.
 
-The activity exceeded the configured detection threshold and was investigated to determine whether the attack resulted in successful authentication.
+The activity exceeded the manually defined detection threshold and was investigated to determine whether the attack resulted in successful authentication.
 
 ---
 
@@ -43,20 +43,22 @@ The activity exceeded the configured detection threshold and was investigated to
 
 ## Detection
 
-The alert was generated using the following threshold:
+Repeated failed and invalid SSH authentication attempts were manually identified through analysis of Ubuntu authentication logs.
 
-```text id="v5dfb1"
+The following analytical threshold was used:
+
+```text
 ≥5 failed/invalid SSH authentication attempts
 from the same source IP
 ```
 
-Observed:
+**Observed Activity:** 12 documented failed or invalid authentication events.
 
-```text id="c1t0lk"
-12 failed/invalid attempts
-```
+The documented activity exceeded the analytical threshold and was classified as a potential SSH brute-force attempt.
 
-The threshold was therefore exceeded.
+**Detection Method:** Manual authentication-log analysis.
+
+**Automation Status:** No automated SIEM alert or scheduled detection rule was implemented.
 
 ---
 
@@ -133,7 +135,7 @@ No successful authentication event was identified.
 
 Therefore:
 
-**The simulated attack did not result in a successful login.**
+**No successful SSH authentication was identified in the reviewed evidence..**
 
 ---
 
@@ -183,7 +185,7 @@ In a production environment, additional controls could include:
 
 ## Analyst Conclusion
 
-The alert represented a genuine simulated brute-force pattern.
+The manually investigated authentication activity was consistent with a simulated SSH brute-force pattern.
 
 The investigation established:
 
